@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Icon = ({ children, className = "h-5 w-5" }) => (
   <svg
@@ -94,49 +94,20 @@ const XIcon = (props) => (
   </Icon>
 );
 
-export default function Header() {
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [cartCount] = useState(0);
+export default function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount] = useState(0);
 
   return (
-    <header
+    <nav
       className="w-full bg-white"
       style={{
         fontFamily:
           "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
       }}
     >
-      <div className="hidden md:block border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-9 text-gray-500 text-[13px] font-medium">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-1">
-                <span>English</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span>Dollar</span>
-              </div>
-            </div>
 
-            <nav className="flex items-center gap-6">
-              <a className="text-sm hover:text-gray-900" href="#">
-                Tracking Package
-              </a>
-              <a className="text-sm hover:text-gray-900" href="#">
-                FAQ
-              </a>
-              <a className="text-sm hover:text-gray-900" href="#">
-                About Us
-              </a>
-              <a className="text-sm hover:text-gray-900" href="#">
-                Contact Us
-              </a>
-            </nav>
-          </div>
-        </div>
-      </div>
-
-      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-3 md:py-5">
           <div className="flex-shrink-0">
             <h1 className="text-2xl md:text-2xl lg:text-2xl font-extrabold tracking-tight">
@@ -236,9 +207,9 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
-      {/* {isMenuOpen && (
+      {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200">
           <div className="px-4 py-4 space-y-4">
             <div className="flex">
@@ -286,7 +257,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      )} */}
-    </header>
+      )}
+    </nav>
   );
 }
