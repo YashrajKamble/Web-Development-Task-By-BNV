@@ -55,7 +55,6 @@ const ShoppingCartIcon = (props) => (
       strokeLinejoin="round"
     >
       <path d="M4 5h2l2 9h9.5a1.5 1.5 0 001.42-1.03L21 8H7.5" />
-      <path d="M6 6h" />
       <circle cx="10" cy="18" r="1.5" />
       <circle cx="18" cy="18" r="1.5" />
     </g>
@@ -97,78 +96,82 @@ const XIcon = (props) => (
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount] = useState(0);
 
   return (
     <header
       className="w-full bg-white"
       style={{
-        fontFamily: "Inter",
-        //   'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial',
+        fontFamily:
+          "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
       }}
     >
-      {!isMenuOpen && (
-        <div className="hidden md:block border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-9 text-gray-500 text-[13px] font-medium">
-              <div className="hidden md:flex items-center gap-6 mt-0">
-                <div className="flex items-center gap-1">
-                  <span>English</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span>Dollar</span>
-                </div>
+      <div className="hidden md:block border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-9 text-gray-500 text-[13px] font-medium">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-1">
+                <span>English</span>
               </div>
-              <nav className="hidden md:flex items-center gap-6">
-                <a className="text-sm hover:text-gray-900" href="#">
-                  Tracking Package
-                </a>
-                <a className="text-sm hover:text-gray-900" href="#">
-                  FAQ
-                </a>
-                <a className="text-sm hover:text-gray-900" href="#">
-                  About Us
-                </a>
-                <a className="text-sm hover:text-gray-900" href="#">
-                  Contact Us
-                </a>
-              </nav>
+              <div className="flex items-center gap-1">
+                <span>Dollar</span>
+              </div>
             </div>
+
+            <nav className="flex items-center gap-6">
+              <a className="text-sm hover:text-gray-900" href="#">
+                Tracking Package
+              </a>
+              <a className="text-sm hover:text-gray-900" href="#">
+                FAQ
+              </a>
+              <a className="text-sm hover:text-gray-900" href="#">
+                About Us
+              </a>
+              <a className="text-sm hover:text-gray-900" href="#">
+                Contact Us
+              </a>
+            </nav>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between py-3 md:py-5">
           <div className="flex-shrink-0">
-            <h1 className="text-3xl font-extrabold tracking-tight">
+            <h1 className="text-2xl md:text-2xl lg:text-2xl font-extrabold tracking-tight">
               ECOMMERCE
             </h1>
           </div>
 
-          <div className="flex-1 mx-6 hidden md:flex items-center justify-center ">
-            <div className="w-full max-w-2xl">
-              <label htmlFor="site-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
+          <div className="flex-1 mx-6 hidden md:flex items-center justify-start">
+            <div className="w-full max-w-[640px]">
+              <form onSubmit={(e) => e.preventDefault()} className="relative">
+                <label htmlFor="site-search" className="sr-only">
+                  Search
+                </label>
+
                 <input
                   id="site-search"
                   type="search"
                   placeholder="Search here"
-                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full rounded-full border border-gray-300 px-5 py-2 pr-14 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black-100 focus:border-black-300 transition-shadow"
+                  aria-label="Search site"
                 />
+
                 <button
+                  type="submit"
                   aria-label="Search"
-                  className="absolute right-1 mt-1 -translate-y-1/2 px-3 py-2 rounded-full hover:bg-gray-100"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 flex items-center justify-center rounded-full bg-white   border-gray-200 hover:bg-gray-50"
                 >
-                  <SearchIcon className="h-5 w-5 text-gray-500" />
+                  <SearchIcon className="h-4 w-4 text-gray-600" />
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-6 ">
+            <div className="hidden md:flex items-center gap-6 mr-60 justify-start">
               <button className="flex items-center gap-2 text-gray-800 text-sm font-medium">
                 <span>All Category</span>
                 <ChevronDownIcon className="h-4 w-4 text-gray-600" />
@@ -188,7 +191,7 @@ export default function Header() {
               </a>
             </div>
 
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-1">
               <button
                 className="p-2 rounded-full hover:bg-gray-100"
                 aria-label="Wishlist"
@@ -201,12 +204,21 @@ export default function Header() {
               >
                 <UserIcon className="h-6 w-6 text-gray-600" />
               </button>
-              <button
-                className="p-2 rounded-full hover:bg-gray-100 relative"
-                aria-label="Cart"
-              >
-                <ShoppingCartIcon className="h-6 w-6 text-gray-600" />
-              </button>
+
+              <div className="relative">
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 relative"
+                  aria-label="Cart"
+                >
+                  <ShoppingCartIcon className="h-6 w-6 text-gray-600" />
+                </button>
+
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white bg-red-500 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="md:hidden">
@@ -233,14 +245,18 @@ export default function Header() {
               <input
                 type="search"
                 placeholder="Search here"
-                className="flex-1 rounded-l-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 rounded-l-lg border border-gray-300 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black-100"
+                aria-label="Mobile search"
               />
-              <button className="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-lg ">
-                <SearchIcon className="h-5 w-5 text-gray-500 " />
+              <button
+                className="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-lg"
+                aria-label="Search"
+              >
+                <SearchIcon className="h-5 w-5 text-gray-500" />
               </button>
             </div>
 
-            <button className="flex items-center gap-2 text-gray-800 text-sm font-medium">
+            <button className="flex items-center gap-2 text-gray-800 text-md font-medium">
               <span>All Category</span>
               <ChevronDownIcon className="h-4 w-4 text-gray-600" />
             </button>
