@@ -94,7 +94,7 @@ const XIcon = (props) => (
   </Icon>
 );
 
-export default function Nav() {
+export default function Nav({ searchQuery, onSearchChange }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount] = useState(0);
 
@@ -126,6 +126,8 @@ export default function Nav() {
                   id="site-search"
                   type="search"
                   placeholder="Search here"
+                  value={searchQuery}
+                  onChange={(e) => onSearchChange(e.target.value)}
                   className="w-full rounded-full border border-gray-300 px-5 py-2 pr-14 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black-100 focus:border-black-300 transition-shadow"
                   aria-label="Search site"
                 />
@@ -133,7 +135,7 @@ export default function Nav() {
                 <button
                   type="submit"
                   aria-label="Search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 flex items-center justify-center rounded-full bg-white   border-gray-200 hover:bg-gray-50"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 flex items-center justify-center rounded-full bg-white border-gray-200 hover:bg-gray-50"
                 >
                   <SearchIcon className="h-4 w-4 text-gray-600" />
                 </button>
@@ -216,6 +218,8 @@ export default function Nav() {
               <input
                 type="search"
                 placeholder="Search here"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
                 className="flex-1 rounded-l-lg border border-gray-300 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black-100"
                 aria-label="Mobile search"
               />

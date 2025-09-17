@@ -1,37 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { fetchCategories, fetchProducts } from "../../src/services/ProductApi";
+import React, { useEffect, useRef } from "react";
 
 const money = (v) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
     v
   );
 
-export default function Trending() {
-  const [cats, setCats] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [selectedCat, setSelectedCat] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+export default function TrendingSection({
+  products,
+  categories,
+  selectedCat,
+  setSelectedCat,
+  loading,
+  error,
+}) {
   const desktopRef = useRef(null);
   const mobileRef = useRef(null);
-
-  useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    Promise.all([fetchCategories(), fetchProducts(100)])
-      .then(([categories, prods]) => {
-        if (!mounted) return;
-        setCats(categories || []);
-        setProducts(prods || []);
-      })
-      .catch((e) => {
-        if (!mounted) return;
-        setError(e.message || "Failed");
-      })
-      .finally(() => mounted && setLoading(false));
-    return () => (mounted = false);
-  }, []);
 
   useEffect(() => {
     const attach = (el) => {
@@ -55,15 +38,6 @@ export default function Trending() {
       if (typeof detachMobile === "function") detachMobile();
     };
   }, []);
-
-  const filtered = selectedCat
-    ? products.filter((p) => {
-        if (!p?.category) return false;
-        if (typeof p.category === "object")
-          return p.category.id === selectedCat;
-        return p.category === selectedCat;
-      })
-    : products;
 
   if (error)
     return <div className="p-6 text-center text-red-600">Error: {error}</div>;
@@ -91,9 +65,8 @@ export default function Trending() {
           >
             ALL
           </button>
-
-          {cats.length > 0 ? (
-            cats.map((c) => (
+          {categories.length > 0 ? (
+            categories.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setSelectedCat(c.id)}
@@ -125,9 +98,8 @@ export default function Trending() {
         >
           All
         </button>
-
-        {cats.length > 0 ? (
-          cats.map((c) => (
+        {categories.length > 0 ? (
+          categories.map((c) => (
             <button
               key={c.id}
               onClick={() => setSelectedCat(c.id)}
@@ -155,13 +127,13 @@ export default function Trending() {
               />
             ))}
           </div>
-        ) : filtered.length === 0 ? (
+        ) : products.length === 0 ? (
           <div className="text-center text-gray-500 bg py-12">
             Not available
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2 cursor-pointer">
-            {filtered.map((p) => (
+            {products.map((p) => (
               <article key={p.id} className="relative">
                 <div className=" w-full h-44 md:h-60 rounded-4xl overflow-hidden bg-gray-200">
                   <img
