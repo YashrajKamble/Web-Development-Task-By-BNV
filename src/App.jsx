@@ -18,6 +18,13 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [showScroll, setShowScroll] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowScroll(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -60,11 +67,25 @@ const App = () => {
 
     return tempProducts;
   }, [allProducts, selectedCat, searchQuery]);
+
+  const scrollToTop = () => {
+    const el = document.getElementById("home");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <Header />
       <Nav searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-      <HeroSection />
+
+      <section id="home">
+        <HeroSection />
+      </section>
+
       <SubHeroSection />
       <TrendingSection
         products={filteredProducts}
@@ -78,6 +99,30 @@ const App = () => {
       <Feedback />
       <BlogSection />
       <Footer />
+
+      <button
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        title="Back to top"
+        className={`fixed right-4 bottom-6 z-50 p-3 rounded-full shadow-lg transition-opacity transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black bg-black text-white ${
+          showScroll ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
+      </button>
     </>
   );
 };
