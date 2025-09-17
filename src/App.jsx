@@ -5,6 +5,7 @@ import BlogSection from "../src/components/BlogSection";
 import Feedback from "../src/components/Feedback";
 import ColorSection from "../src/components/ColorSection";
 import HeroSection from "../src/components/HeroSection";
+import SubHeroSection from "../src/components/SubHeroSection";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Header />
       <Nav />
       <HeroSection />
+      <SubHeroSection />
       <ColorSection />
       <Feedback />
       <BlogSection />
