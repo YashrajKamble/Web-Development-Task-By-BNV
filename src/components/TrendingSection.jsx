@@ -43,7 +43,10 @@ export default function TrendingSection({
     return <div className="p-6 text-center text-red-600">Error: {error}</div>;
 
   return (
-    <section className="px-4 md:px-0 py-8 max-w-[1225px] mx-auto">
+    <section
+      className="px-4 md:px-0 py-8 max-w-[1225px] mx-auto"
+      id="categories"
+    >
       <style>{`
         .hide-scrollbar::-webkit-scrollbar{ display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

@@ -2,7 +2,7 @@ import React from "react";
 
 const App = () => {
   return (
-    <div className="bg-[#121212] flex items-end">
+    <div className="bg-[#121212] flex items-end" id="contact">
       <footer className="bg-[#191919] text-white w-full">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16">
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-12 md:gap-20">

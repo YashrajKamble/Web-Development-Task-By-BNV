@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const Icon = ({ children, className = "h-5 w-5" }) => (
   <svg
@@ -97,6 +97,31 @@ const XIcon = (props) => (
 export default function Nav({ searchQuery, onSearchChange }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [mobileCatOpen, setMobileCatOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleNavigate = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.location.hash = `#${id}`;
+    }
+    setOpen(false);
+    setMobileCatOpen(false);
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav
@@ -106,7 +131,6 @@ export default function Nav({ searchQuery, onSearchChange }) {
           "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
       }}
     >
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-3 md:py-5">
           <div className="flex-shrink-0">
@@ -145,10 +169,52 @@ export default function Nav({ searchQuery, onSearchChange }) {
 
           <div className="flex items-center gap-4 md:gap-6 ">
             <div className="hidden md:flex items-center gap-6 mr-60 justify-start">
-              <button className="flex items-center gap-2 text-gray-800 text-sm font-medium">
-                <span>All Category</span>
-                <ChevronDownIcon className="h-4 w-4 text-gray-600" />
-              </button>
+              <div className="relative inline-block" ref={dropdownRef}>
+                <button
+                  onClick={() => setOpen((s) => !s)}
+                  aria-haspopup="true"
+                  aria-expanded={open}
+                  className="flex items-center gap-2 text-gray-800 text-sm font-medium"
+                >
+                  <span>All Category</span>
+                  <ChevronDownIcon className="h-4 w-4 text-gray-600" />
+                </button>
+
+                {open && (
+                  <div className="absolute mt-2 w-44 bg-white border rounded-lg shadow-lg z-20">
+                    <a
+                      href="#home"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigate("home");
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Home
+                    </a>
+                    <a
+                      href="#categories"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigate("categories");
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Categories
+                    </a>
+                    <a
+                      href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigate("contact");
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Contact
+                    </a>
+                  </div>
+                )}
+              </div>
 
               <a
                 href="#"
@@ -231,10 +297,50 @@ export default function Nav({ searchQuery, onSearchChange }) {
               </button>
             </div>
 
-            <button className="flex items-center gap-2 text-gray-800 text-md font-medium">
-              <span>All Category</span>
-              <ChevronDownIcon className="h-4 w-4 text-gray-600" />
-            </button>
+            <div>
+              <button
+                onClick={() => setMobileCatOpen((s) => !s)}
+                className="flex items-center gap-2 text-gray-800 text-md font-medium"
+              >
+                <span>All Category</span>
+                <ChevronDownIcon className="h-4 w-4 text-gray-600" />
+              </button>
+
+              {mobileCatOpen && (
+                <div className="mt-2 space-y-1">
+                  <a
+                    href="#home"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate("home");
+                    }}
+                    className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    Home
+                  </a>
+                  <a
+                    href="#categories"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate("categories");
+                    }}
+                    className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    Categories
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate("contact");
+                    }}
+                    className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    Contact
+                  </a>
+                </div>
+              )}
+            </div>
 
             <div className="space-y-2 border-b border-gray-200 pb-3">
               <a href="#" className="block py-2 text-gray-700 font-medium">

@@ -101,6 +101,7 @@ export default function Header() {
   return (
     <header
       className="w-full bg-white"
+      id="home"
       style={{
         fontFamily:
           "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
