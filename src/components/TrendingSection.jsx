@@ -9,10 +9,22 @@ export default function TrendingSection({
   setSelectedCat,
   loading,
   error,
+  itemsPerPage = 12,
 }) {
   const desktopRef = useRef(null);
   const mobileRef = useRef(null);
   const [activeCardId, setActiveCardId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalItems = products.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [products, selectedCat]);
 
   useEffect(() => {
     const attach = (el) => {
@@ -64,6 +76,52 @@ export default function TrendingSection({
   const handleFavoriteClick = (product, e) => {
     e.stopPropagation();
     console.log("Added to favorites:", product);
+  };
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      document.getElementById("categories")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  const generatePageNumbers = () => {
+    const pages = [];
+    const showEllipsis = totalPages > 7;
+
+    if (!showEllipsis) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      if (currentPage > 3) {
+        pages.push("...");
+      }
+
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = start; i <= end; i++) {
+        if (i !== 1 && i !== totalPages) {
+          pages.push(i);
+        }
+      }
+
+      if (currentPage < totalPages - 2) {
+        pages.push("...");
+      }
+
+      if (totalPages > 1) {
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
   };
 
   if (error) {
@@ -185,6 +243,18 @@ export default function TrendingSection({
         )}
       </div>
 
+      {!loading && totalItems > 0 && (
+        <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
+          <div>
+            Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of{" "}
+            {totalItems} products
+          </div>
+          <div className="hidden md:block">
+            Page {currentPage} of {totalPages}
+          </div>
+        </div>
+      )}
+
       <div className="mt-4">
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -208,72 +278,147 @@ export default function TrendingSection({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {products.map((p) => (
-              <article
-                key={p.id}
-                className={`relative cursor-pointer rounded-4xl bg-white transition-all duration-200 
-                  ${
-                    activeCardId === p.id
-                      ? "md:transform md:-translate-y-1 md:shadow-xl scale-[0.98] md:scale-100 shadow-lg md:shadow-xl"
-                      : "hover:md:-translate-y-1 hover:md:shadow-xl"
-                  }`}
-                onClick={(e) => handleProductClick(p, e)}
-              >
-                <div className="w-full h-44 md:h-60 rounded-4xl overflow-hidden bg-gray-200 relative group">
-                  <img
-                    src={p.images && p.images[0]}
-                    alt={p.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    style={{ aspectRatio: "4/3" }}
-                    onError={(e) => {
-                      e.target.src =
-                        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" fill="%23d1d5db"%3ENo Image%3C/text%3E%3C/svg%3E';
-                    }}
-                  />
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {currentProducts.map((p) => (
+                <article
+                  key={p.id}
+                  className={`relative cursor-pointer rounded-4xl bg-white transition-all duration-200 
+                    ${
+                      activeCardId === p.id
+                        ? "md:transform md:-translate-y-1 md:shadow-xl scale-[0.98] md:scale-100 shadow-lg md:shadow-xl"
+                        : "hover:md:-translate-y-1 hover:md:shadow-xl"
+                    }`}
+                  onClick={(e) => handleProductClick(p, e)}
+                >
+                  <div className="w-full h-44 md:h-60 rounded-4xl overflow-hidden bg-gray-200 relative group">
+                    <img
+                      src={p.images && p.images[0]}
+                      alt={p.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      style={{ aspectRatio: "4/3" }}
+                      onError={(e) => {
+                        e.target.src =
+                          'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" fill="%23d1d5db"%3ENo Image%3C/text%3E%3C/svg%3E';
+                      }}
+                    />
 
-                  <button
-                    aria-label="Add to favorites"
-                    className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow hover:bg-white transition-all duration-200 active:scale-90
-                      ${
-                        activeCardId === p.id
-                          ? "opacity-100 scale-100"
-                          : "md:opacity-0 md:scale-75 md:group-hover:opacity-100 md:group-hover:scale-100"
-                      }`}
-                    onClick={(e) => handleFavoriteClick(p, e)}
-                  >
-                    <FavoriteIcon />
-                  </button>
-
-                  <div
-                    className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-300
-                      ${
-                        activeCardId === p.id
-                          ? "opacity-100 scale-100 pointer-events-auto"
-                          : "opacity-0 md:translate-y-5 scale-90 md:scale-100 pointer-events-none md:group-hover:opacity-100 md:group-hover:translate-y-0 md:group-hover:pointer-events-auto"
-                      }`}
-                  >
                     <button
-                      onClick={(e) => handleAddToCart(p, e)}
-                      className="bg-white text-black px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-xs md:text-sm hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 active:scale-90 shadow-lg"
+                      aria-label="Add to favorites"
+                      className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow hover:bg-white transition-all duration-200 active:scale-90
+                        ${
+                          activeCardId === p.id
+                            ? "opacity-100 scale-100"
+                            : "md:opacity-0 md:scale-75 md:group-hover:opacity-100 md:group-hover:scale-100"
+                        }`}
+                      onClick={(e) => handleFavoriteClick(p, e)}
                     >
-                      Add to Cart
+                      <FavoriteIcon />
                     </button>
+
+                    <div
+                      className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-300
+                        ${
+                          activeCardId === p.id
+                            ? "opacity-100 scale-100 pointer-events-auto"
+                            : "opacity-0 md:translate-y-5 scale-90 md:scale-100 pointer-events-none md:group-hover:opacity-100 md:group-hover:translate-y-0 md:group-hover:pointer-events-auto"
+                        }`}
+                    >
+                      <button
+                        onClick={(e) => handleAddToCart(p, e)}
+                        className="bg-white text-black px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-xs md:text-sm hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 active:scale-90 shadow-lg"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
                   </div>
+
+                  <div className="p-1 mb-2">
+                    <h3 className="text-sm md:text-base font-medium line-clamp-2 font-inter">
+                      {p.title}
+                    </h3>
+                    <div className="mt-2 text-sm text-gray-600 font-medium">
+                      {p.price ? money(p.price) : "Price unavailable"}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center mt-8 gap-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-500 transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Previous
+                </button>
+
+                <div className="hidden md:flex items-center gap-1">
+                  {generatePageNumbers().map((page, index) => (
+                    <React.Fragment key={index}>
+                      {page === "..." ? (
+                        <span className="px-3 py-2 text-sm text-gray-400">
+                          ...
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handlePageChange(page)}
+                          className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                            currentPage === page
+                              ? "bg-black text-white"
+                              : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      )}
+                    </React.Fragment>
+                  ))}
                 </div>
 
-                <div className="p-1 mb-2">
-                  <h3 className="text-sm md:text-base font-medium line-clamp-2 font-inter">
-                    {p.title}
-                  </h3>
-                  <div className="mt-2 text-sm text-gray-600 font-medium">
-                    {p.price ? money(p.price) : "Price unavailable"}
-                  </div>
+                <div className="flex md:hidden items-center px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg">
+                  {currentPage} / {totalPages}
                 </div>
-              </article>
-            ))}
-          </div>
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-500 transition-colors"
+                >
+                  Next
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
