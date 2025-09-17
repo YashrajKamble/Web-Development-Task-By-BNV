@@ -38,7 +38,7 @@ const SubHeroSection = () => {
           <button
             type="button"
             aria-label="Browse inspirations"
-            className="mt-6 items-center gap-2 w-[220px] h-10 rounded-full border border-black/20 text-sm font-medium px-4 py-2 transition-transform hover:shadow"
+            className="mt-6 items-center gap-2 w-[220px] h-10 rounded-full border border-black/20 text-sm font-medium px-4 py-2 transition-transform hover:shadow cursor-pointer"
           >
             Browse Inspirations
           </button>
@@ -54,17 +54,17 @@ const SubHeroSection = () => {
             <img
               src={HeroImage}
               alt="Say it with Shirt"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover cursor-pointer"
             />
 
             <div className="absolute left-4 bottom-4 text-white font-semibold text-xl drop-shadow-md">
-              <span className="text-2xl"> Say it</span>
+              <span className="text-2xl cursor-pointer"> Say it</span>
 
               <br />
-              <span className="text-2xl">with Shirt</span>
+              <span className="text-2xl cursor-pointer">with Shirt</span>
             </div>
             <div className="absolute right-4 bottom-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
-              <ArrowIcon />
+              <ArrowIcon className="cursor-pointer text-white" />
             </div>
           </div>
 
@@ -77,16 +77,16 @@ const SubHeroSection = () => {
             <img
               src={HeroImage2}
               alt="Funky never get old"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover cursor-pointer"
             />
 
             <div className="absolute left-4 bottom-4 text-white font-normal text-xl drop-shadow-md">
-              <span className="text-2xl">Funky never</span>
+              <span className="text-2xl cursor-pointer">Funky never</span>
               <br />
-              <span className="text-2xl">get old</span>
+              <span className="text-2xl cursor-pointer">get old</span>
             </div>
             <div className="absolute right-4 bottom-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
-              <ArrowIcon />
+              <ArrowIcon className="cursor-pointer text-white" />
             </div>
           </div>
         </div>
