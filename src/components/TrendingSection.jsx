@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { money } from "../hooks/Currency";
 import { FavoriteIcon } from "../hooks/Icons";
 
@@ -12,6 +12,7 @@ export default function TrendingSection({
 }) {
   const desktopRef = useRef(null);
   const mobileRef = useRef(null);
+  const [activeCardId, setActiveCardId] = useState(null);
 
   useEffect(() => {
     const attach = (el) => {
@@ -35,6 +36,35 @@ export default function TrendingSection({
       if (typeof detachMobile === "function") detachMobile();
     };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setActiveCardId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const handleAddToCart = (product, e) => {
+    e.stopPropagation();
+    console.log("Adding to cart:", product);
+    setActiveCardId(null);
+  };
+
+  const handleProductClick = (product, e) => {
+    e.stopPropagation();
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setActiveCardId(activeCardId === product.id ? null : product.id);
+    } else {
+      console.log("Product clicked:", product);
+    }
+  };
+
+  const handleFavoriteClick = (product, e) => {
+    e.stopPropagation();
+    console.log("Added to favorites:", product);
+  };
 
   if (error) {
     return (
@@ -73,8 +103,8 @@ export default function TrendingSection({
           className="hidden md:flex gap-3 overflow-x-auto hide-scrollbar w-xl cursor-pointer"
         >
           <button
-            className={`px-4 py-2 rounded-full border text-sm cursor-pointer ${
-              !selectedCat ? "bg-black text-white" : "bg-white"
+            className={`px-4 py-2 rounded-full border text-sm cursor-pointer transition-all duration-200 hover:scale-105 ${
+              !selectedCat ? "bg-black text-white" : "bg-white hover:bg-gray-50"
             }`}
             onClick={() => setSelectedCat(null)}
             aria-pressed={!selectedCat}
@@ -94,8 +124,10 @@ export default function TrendingSection({
               <button
                 key={c.id}
                 onClick={() => setSelectedCat(c.id)}
-                className={`px-4 py-2 rounded-full border text-sm cursor-pointer ${
-                  selectedCat === c.id ? "bg-black text-white" : "bg-white"
+                className={`px-4 py-2 rounded-full border text-sm cursor-pointer transition-all duration-200 hover:scale-105 ${
+                  selectedCat === c.id
+                    ? "bg-black text-white"
+                    : "bg-white hover:bg-gray-50"
                 }`}
                 aria-pressed={selectedCat === c.id}
                 disabled={loading}
@@ -117,8 +149,8 @@ export default function TrendingSection({
       >
         <button
           onClick={() => setSelectedCat(null)}
-          className={`px-3 py-1.5 rounded-full border text-sm ${
-            !selectedCat ? "bg-black text-white" : "bg-white"
+          className={`px-3 py-1.5 rounded-full border text-sm transition-all duration-200 active:scale-95 ${
+            !selectedCat ? "bg-black text-white" : "bg-white active:bg-gray-50"
           }`}
           disabled={loading}
         >
@@ -136,8 +168,10 @@ export default function TrendingSection({
             <button
               key={c.id}
               onClick={() => setSelectedCat(c.id)}
-              className={`px-3 py-1.5 rounded-full border text-sm ${
-                selectedCat === c.id ? "bg-black text-white" : "bg-white"
+              className={`px-3 py-1.5 rounded-full border text-sm transition-all duration-200 active:scale-95 ${
+                selectedCat === c.id
+                  ? "bg-black text-white"
+                  : "bg-white active:bg-gray-50"
               }`}
               disabled={loading}
             >
@@ -176,8 +210,17 @@ export default function TrendingSection({
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {products.map((p) => (
-              <article key={p.id} className="relative cursor-pointer group">
-                <div className="w-full h-44 md:h-60 rounded-4xl overflow-hidden bg-gray-200">
+              <article
+                key={p.id}
+                className={`relative cursor-pointer rounded-4xl bg-white transition-all duration-200 
+                  ${
+                    activeCardId === p.id
+                      ? "md:transform md:-translate-y-1 md:shadow-xl scale-[0.98] md:scale-100 shadow-lg md:shadow-xl"
+                      : "hover:md:-translate-y-1 hover:md:shadow-xl"
+                  }`}
+                onClick={(e) => handleProductClick(p, e)}
+              >
+                <div className="w-full h-44 md:h-60 rounded-4xl overflow-hidden bg-gray-200 relative group">
                   <img
                     src={p.images && p.images[0]}
                     alt={p.title}
@@ -189,12 +232,35 @@ export default function TrendingSection({
                         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" fill="%23d1d5db"%3ENo Image%3C/text%3E%3C/svg%3E';
                     }}
                   />
+
                   <button
                     aria-label="Add to favorites"
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow hover:bg-white transition-colors"
+                    className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow hover:bg-white transition-all duration-200 active:scale-90
+                      ${
+                        activeCardId === p.id
+                          ? "opacity-100 scale-100"
+                          : "md:opacity-0 md:scale-75 md:group-hover:opacity-100 md:group-hover:scale-100"
+                      }`}
+                    onClick={(e) => handleFavoriteClick(p, e)}
                   >
                     <FavoriteIcon />
                   </button>
+
+                  <div
+                    className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-300
+                      ${
+                        activeCardId === p.id
+                          ? "opacity-100 scale-100 pointer-events-auto"
+                          : "opacity-0 md:translate-y-5 scale-90 md:scale-100 pointer-events-none md:group-hover:opacity-100 md:group-hover:translate-y-0 md:group-hover:pointer-events-auto"
+                      }`}
+                  >
+                    <button
+                      onClick={(e) => handleAddToCart(p, e)}
+                      className="bg-white text-black px-4 py-2 md:px-6 md:py-3 rounded-full font-medium text-xs md:text-sm hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 active:scale-90 shadow-lg"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-1 mb-2">
