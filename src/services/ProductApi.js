@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.escuelajs.co/api/v1";
+import { BASE_URL } from '../../utils/config.js';
 
 export async function fetchCategories() {
     const res = await fetch(`${BASE_URL}/categories`);

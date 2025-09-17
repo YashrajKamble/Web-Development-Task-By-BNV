@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { CONTACT_US } from "../../utils/config.js";
 
 function Modal({ open, title, children, onClose }) {
   const panelRef = useRef(null);
@@ -6,7 +7,7 @@ function Modal({ open, title, children, onClose }) {
   useEffect(() => {
     if (!open) return;
     const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; 
+    document.body.style.overflow = "hidden";
 
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
@@ -102,7 +103,7 @@ const App = () => {
     console.log("Contact payload:", payload);
 
     try {
-      const resp = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      const resp = await fetch(CONTACT_US, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -408,7 +409,7 @@ const App = () => {
             : "Confirm message"
         }
         onClose={() => {
-          if (isSubmitting) return; 
+          if (isSubmitting) return;
           setModalOpen(false);
           setRemoteResponse(null);
         }}

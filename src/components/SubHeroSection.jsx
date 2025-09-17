@@ -1,23 +1,7 @@
 import React from "react";
 import HeroImage from "../../src/assets/image1.png";
 import HeroImage2 from "../../src/assets/image6.png";
-
-const ArrowIcon = ({ className = "w-5 h-5 text-white" }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-    aria-hidden
-  >
-    <path d="M7 17L17 7" />
-    <path d="M7 7h10v10" />
-  </svg>
-);
+import { ArrowIcon } from "../hooks/Icons";
 
 const SubHeroSection = () => {
   return (

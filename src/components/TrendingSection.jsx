@@ -1,9 +1,6 @@
 import React, { useEffect, useRef } from "react";
-
-const money = (v) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    v
-  );
+import { money } from "../hooks/Currency";
+import { FavoriteIcon } from "../hooks/Icons";
 
 export default function TrendingSection({
   products,
@@ -150,20 +147,7 @@ export default function TrendingSection({
                     aria-label="favorite"
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow"
                   >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 21s-7-4.35-9-7.27C1.28 10.7 4 6 7.5 6c1.74 0 3.02.99 4.5 2.6C13.48 6.99 14.76 6 16.5 6 20 6 22.72 10.7 21 13.73 19 16.65 12 21 12 21z"
-                        stroke="#444"
-                        strokeWidth="0.8"
-                        fill="none"
-                      />
-                    </svg>
+                    <FavoriteIcon />
                   </button>
                 </div>
 
