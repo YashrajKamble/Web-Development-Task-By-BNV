@@ -49,17 +49,51 @@ A modern, responsive e-commerce platform built with cutting-edge web technologie
 - eslint-plugin-react-hooks: ^5.2.0
 - eslint-plugin-react-refresh: ^0.4.20
 
-## 🌐 API Integration
+## 📸 Screenshots
 
-This project integrates with the following APIs:
+### Search bar
+![Search bar](src/assets/thumbnails/Image_1.png)
+*Intuitive search interface with real-time suggestions and filtering capabilities*
 
-### Product API
-- **Base URL**: `https://fakestoreapi.com`
-- **Endpoints**:
-  - `GET /products` - Fetch all products
-  - `GET /products/categories` - Get product categories
-  - `GET /products/category/{category}` - Get products by category
-  - `GET /products/{id}` - Get single product details
+### Search Result
+![Search Result](src/assets/thumbnails/Image_2.png)
+*Dynamic search results page displaying relevant products with key details*
+
+### All Categories > Home, Categories, Contact
+![Navigation Menu](src/assets/thumbnails/Image_3.png)
+*Comprehensive navigation menu with categorized product access and contact information*
+
+### Categories Type and Pagination Header
+![Categories and Pagination](src/assets/thumbnails/Image_4.png)
+*Product category filtering with pagination controls for seamless navigation*
+
+### Pagination Bottom
+![Pagination Controls](src/assets/thumbnails/Image_5.png)
+*User-friendly pagination system for browsing through product listings*
+
+### Hover Effect on Selected Categories
+![Category Hover Effect](src/assets/thumbnails/Image_6.png)
+*Interactive UI feedback with hover effects on category selection*
+
+### Contact Form
+![Contact Form](src/assets/thumbnails/Image_7.png)
+*Responsive contact form with structured input fields for user inquiries*
+
+### Contact Form Client-Side Validation
+![Form Validation](src/assets/thumbnails/Image_8.png)
+*Real-time client-side form validation with user feedback*
+
+### Contact Information Confirmation Tab
+![Form Confirmation](src/assets/thumbnails/Image_9.png)
+*Review step showing user input before final submission*
+
+### Message Sent Successfully
+![Success Message](src/assets/thumbnails/Image_10.png)
+*Confirmation screen displayed after successful form submission*
+
+### Scroll-to-Top Button
+![Scroll-to-Top](src/assets/thumbnails/Image_11.png)
+*Accessibility feature for quick navigation to the top of the page*
 
 ## 🚀 Getting Started
 
