@@ -76,7 +76,7 @@ A modern, responsive e-commerce platform built with cutting-edge web technologie
 *Interactive UI feedback with hover effects on category selection*
 
 ### Contact Form
-![Contact Form](src/assets/thumbnails/Image_7.png)
+![Contact Form](src/assets/thumbnails/image_7.png)
 *Responsive contact form with structured input fields for user inquiries*
 
 ### Contact Form Client-Side Validation
