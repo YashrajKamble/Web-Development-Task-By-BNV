@@ -9,7 +9,7 @@ export default function TrendingSection({
   setSelectedCat,
   loading,
   error,
-  itemsPerPage = 12,
+  itemsPerPage = 6,
 }) {
   const desktopRef = useRef(null);
   const mobileRef = useRef(null);
@@ -307,7 +307,7 @@ export default function TrendingSection({
                     className={`relative cursor-pointer rounded-4xl bg-white transition-all duration-200 
                       ${
                         activeCardId === p.id
-                          ? "md:transform md:-translate-y-1 md:shadow-xl scale-[0.98] md:scale-100 shadow-lg md:shadow-xl"
+                          ? "md:transform md:-translate-y-1 scale-[0.98] md:scale-100 shadow-lg md:shadow-xl"
                           : "hover:md:-translate-y-1 hover:md:shadow-xl"
                       }`}
                     onClick={(e) => handleProductClick(p, e)}
